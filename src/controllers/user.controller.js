@@ -6,6 +6,7 @@ import {ApiResponse} from "../utils/apiResponse.js"
 
 const registerUser = asyncHandler( async (req,res) => {
     // get user details from frontend.
+    console.log(req.body);
     const {username, email, fullName, password} = req.body
     console.log("username : ",username)
 
@@ -17,7 +18,7 @@ const registerUser = asyncHandler( async (req,res) => {
     }
 
     // Check if user alredy exists.
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or: [{username},{email}]
     })
 
@@ -26,6 +27,7 @@ const registerUser = asyncHandler( async (req,res) => {
     }
     
     // Checking for images or avatars.
+    console.log("res.files : ",res.files)
     const avatarLocalPath = req.files?.avatar[0]?.path;
     const coverImageLocalPath = req.files?.coverImage[0]?.path;
     if(!avatarLocalPath){
